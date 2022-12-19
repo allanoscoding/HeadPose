@@ -41,7 +41,7 @@ def limitAngles(distance, grid_size = 1):
         cell_size_x = H/ grid_size[0]
         cell_size_y = W /grid_size[0]
 
-        cell_x = math.tan(cell_size_x /(dCam))
+        cell_x = math.tan(cell_size_x / dCam)
         cell_x = math.atan(cell_x) #-> Rad
         cell_x *= 180 / math.pi
 

@@ -5,15 +5,15 @@ import time
 from screenCalculations import *
 
 
-#Camera position
+# Camera position
 bottom = True
-#Grid parameters
+# Grid parameters
 num_cells = 3
 grid_size = (num_cells, num_cells)
-grid = np.zeros(shape = grid_size)
+grid = np.zeros(shape=grid_size)
 
 
-#Main code
+# Main code
 mp_face_mesh = mp.solutions.face_mesh
 mp_face_det = mp.solutions.face_detection
 
@@ -45,16 +45,12 @@ while cap.isOpened():
    
     obj_width = 0
     if det_result.detections:
-            for detection in det_result.detections:
-                
-                bBox = detection.location_data.relative_bounding_box
+        for detection in det_result.detections:
 
-                h, w, c = image.shape
-
-                x, y, w, h = int(bBox.xmin * w), int(bBox.ymin * h), int(bBox.width * w), int(bBox.height * h)
-
-                obj_width = w
-
+            bBox = detection.location_data.relative_bounding_box
+            h, w, c = image.shape
+            x, y, w, h = int(bBox.xmin * w), int(bBox.ymin * h), int(bBox.width * w), int(bBox.height * h)
+            obj_width = w
 
     # To improve performance
     image.flags.writeable = True
@@ -89,15 +85,12 @@ while cap.isOpened():
             face_3d = np.array(face_3d, dtype=np.float64)
 
             # Calibration for C920HD Logitech cam
-            if not bottom:
-                focal_length = 3.67##mm
-            else:
-                focal_length = 1 * img_w
+            focal_length = 1 * img_w
 
             # The camera matrix
-            cam_matrix = np.array([ [focal_length, 0, img_h / 2],
-                                    [0, focal_length, img_w / 2],
-                                    [0, 0, 1]])
+            cam_matrix = np.array([[focal_length, 0, img_h / 2],
+                                  [0, focal_length, img_w / 2],
+                                  [0, 0, 1]])
 
             # The distortion parameters
             dist_matrix = np.zeros((4, 1), dtype=np.float64)
@@ -119,19 +112,14 @@ while cap.isOpened():
             distance = Distance_finder(focal_length, face_width, obj_width)
             x_limit, y_limit, cell_x, cell_y = limitAngles(distance, grid_size)
 
-            y_grid = 0
-
-            # Printed value of angles
-            y_grid = (y + y_limit)
-
             # Calculation of indices -> State grid
-            idx = int(abs(x)/ cell_x)
-            idy = int(y_grid / cell_y)
+            idx = int(abs(x) / cell_x)
+            idy = int((y + y_limit) / cell_y)
 
             # See where the user's head tilting
-            if y < -y_limit:
+            if y < -(y_limit / 2):
                 text = "Outside Left"
-            elif y >= y_limit:
+            elif y > (y_limit / 2):
                 text = "Outside Right"
             elif x < 0:
                 text = "Outside Down"
@@ -141,17 +129,16 @@ while cap.isOpened():
                 text = "Inside (%d, %d)" % (idx % grid_size[0], idy % grid_size[0])
                 grid[idx % grid_size[0]][idy % grid_size[0]] = 1
 
-
             print(grid)
             grid[:][:] = 0
             
             # Clearing the Screen
-            #os.system('clear')
+            # os.system('clear')
             # Display the nose direction
             nose_3d_projection, jacobian = cv2.projectPoints(nose_3d, rot_vec, trans_vec, cam_matrix, dist_matrix)
 
             p1 = (int(nose_2d[0]), int(nose_2d[1]))
-            p2 = (int(nose_2d[0] + y * 10) , int(nose_2d[1] - x * 10))
+            p2 = (int(nose_2d[0] + y * 10), int(nose_2d[1] - x * 10))
             
             cv2.line(image, p1, p2, (255, 0, 0), 3)
 
@@ -160,14 +147,12 @@ while cap.isOpened():
             cv2.putText(image, "x: " + str(np.round(x,2)), (500, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
             cv2.putText(image, "y: " + str(np.round(y,2)), (500, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
             cv2.putText(image, "z: " + str(np.round(z,2)), (500, 150), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
-            
-
 
         end = time.time()
         totalTime = end - start
 
         fps = 1 / totalTime
-        #print("FPS: ", fps)
+        # print("FPS: ", fps)
 
         cv2.putText(image, f'FPS: {int(fps)}', (20,450), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0,255,0), 2)
 
@@ -175,10 +160,9 @@ while cap.isOpened():
                     image=image,
                     landmark_list=face_landmarks,
                     connections=mp_face_mesh.FACEMESH_CONTOURS,
-                    #connections=mp_face_mesh.FACE_CONNECTIONS,
+                    # connections=mp_face_mesh.FACE_CONNECTIONS,
                     landmark_drawing_spec=drawing_spec,
                     connection_drawing_spec=drawing_spec)
-
 
     cv2.imshow('Head Pose Estimation', image)
     if cv2.waitKey(5) & 0xFF == 27:
