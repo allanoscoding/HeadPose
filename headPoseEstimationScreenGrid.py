@@ -127,8 +127,11 @@ while cap.isOpened():
             # Calculation of indices -> State grid
             idx = int(abs(x)/ cell_x)
             idy = int(y_grid / cell_y)
-            # See where the user's head tilting
 
+            # See where the user's head tilting
+            
+        
+            '''
             if not bottom:
 
                 if y_grid < 0 or y_grid > int(cell_y * grid_size[0]):
@@ -142,8 +145,8 @@ while cap.isOpened():
                 else:
                     text = "(%d, %d)" % (idx % grid_size[0], idy % grid_size[0])
                     grid[idx % grid_size[0]][idy % grid_size[0]] = 1
-            
-                
+
+
 
             else:
                 if y_grid < 0 or y_grid > int(cell_y * grid_size[0]):
@@ -158,6 +161,18 @@ while cap.isOpened():
                     text = "(%d, %d)" % (idx % grid_size[0], idy % grid_size[0])
                     grid[idx % grid_size[0]][idy % grid_size[0]] = 1
                 
+            '''
+            if y < -y_limit:
+                text = "Outside Left "
+            elif y >= y_limit:
+                text = "Outside Right"
+            elif x < 0:
+                text = "Outside Down"
+            elif x > 2 * x_limit:
+                text = "Outside Up"
+            else:
+                text = "Inside (%d, %d)" % (idx % grid_size[0], idy % grid_size[0])
+                grid[idx % grid_size[0]][idy % grid_size[0]] = 1
 
             print(grid)
             grid[:][:] = 0
@@ -175,7 +190,7 @@ while cap.isOpened():
             # Add the text on the image
             cv2.putText(image, text, (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 2)
             cv2.putText(image, "x: " + str(np.round(x,2)), (500, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
-            cv2.putText(image, "y: " + str(np.round(y_grid,2)), (500, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+            cv2.putText(image, "y: " + str(np.round(y,2)), (500, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
             cv2.putText(image, "z: " + str(np.round(z,2)), (500, 150), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
             
 
