@@ -129,50 +129,18 @@ while cap.isOpened():
             idy = int(y_grid / cell_y)
 
             # See where the user's head tilting
-            
-        
-            '''
-            if not bottom:
-
-                if y_grid < 0 or y_grid > int(cell_y * grid_size[0]):
-                    text = "Outside  "
-                else:
-                    text = "(%d, %d)" % (idx , idy )
-                    grid[idx % grid_size[0]][idy % grid_size[0]] = 1
-            
-                if x > 0 or x < -int(cell_x * grid_size[0]) :
-                    text = "Outside "
-                else:
-                    text = "(%d, %d)" % (idx % grid_size[0], idy % grid_size[0])
-                    grid[idx % grid_size[0]][idy % grid_size[0]] = 1
-
-
-
-            else:
-                if y_grid < 0 or y_grid > int(cell_y * grid_size[0]):
-                    text = "Outside  "
-                else:
-                    text = "(%d, %d)" % (idx , idy )
-                    grid[idx % grid_size[0]][idy % grid_size[0]] = 1
-                
-                if x < 0 or x > int(cell_x * grid_size[0]) :
-                    text = "Outside "
-                else:
-                    text = "(%d, %d)" % (idx % grid_size[0], idy % grid_size[0])
-                    grid[idx % grid_size[0]][idy % grid_size[0]] = 1
-                
-            '''
             if y < -y_limit:
-                text = "Outside Left "
+                text = "Outside Left"
             elif y >= y_limit:
                 text = "Outside Right"
             elif x < 0:
                 text = "Outside Down"
             elif x > 2 * x_limit:
-                text = "Outside Up"
+                text = "Outside Up"  
             else:
                 text = "Inside (%d, %d)" % (idx % grid_size[0], idy % grid_size[0])
                 grid[idx % grid_size[0]][idy % grid_size[0]] = 1
+
 
             print(grid)
             grid[:][:] = 0
