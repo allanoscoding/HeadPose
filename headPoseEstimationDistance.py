@@ -45,7 +45,6 @@ while cap.isOpened():
 
                 obj_width = w
 
-
     # To improve performance
     image.flags.writeable = True
     
@@ -102,8 +101,8 @@ while cap.isOpened():
             z = angles[2] * 360
           
             face_width = 14.0
-            distance = Distance_finder(focal_length, face_width, obj_width)
-            x_limit, y_limit = limitAngles(distance)
+            distance = distance_finder(focal_length, face_width, obj_width)
+            x_limit, y_limit = limit_angles(distance)
             # See where the user's head tilting
             if y <= -y_limit:
                 text = "Outside Left "
@@ -131,12 +130,11 @@ while cap.isOpened():
             cv2.putText(image, "z: " + str(np.round(z,2)), (500, 150), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
             cv2.putText(image, "dist: " + str(np.round(distance,2)), (500, 200), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
-
         end = time.time()
         totalTime = end - start
 
         fps = 1 / totalTime
-        #print("FPS: ", fps)
+        # print("FPS: ", fps)
 
         cv2.putText(image, f'FPS: {int(fps)}', (20,450), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0,255,0), 2)
 

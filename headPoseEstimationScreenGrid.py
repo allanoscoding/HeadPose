@@ -117,13 +117,13 @@ while cap.isOpened():
             idy = int((y + y_limit) / cell_y)
 
             # See where the user's head tilting
-            if y < -(y_limit / 2):
+            if y < -y_limit:
                 text = "Outside Left"
-            elif y > (y_limit / 2):
+            elif y > y_limit:
                 text = "Outside Right"
             elif x < 0:
                 text = "Outside Down"
-            elif x > 2 * x_limit:
+            elif x > x_limit:
                 text = "Outside Up"  
             else:
                 text = "Inside (%d, %d)" % (idx % grid_size[0], idy % grid_size[0])

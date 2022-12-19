@@ -33,7 +33,7 @@ def limit_angles(distance, grid_size=(1, 1)):
     theta_y = math.atan(theta_y)
     theta_y *= 180/math.pi
 
-    theta_x = math.tan(h / (2 * d_cam))
+    theta_x = math.tan(h / d_cam)
     # -> Rad
     theta_x = math.atan(theta_x)
     theta_x *= 180/math.pi
