@@ -109,8 +109,8 @@ while cap.isOpened():
             z = angles[2] * 360
 
             face_width = 14.0
-            distance = Distance_finder(focal_length, face_width, obj_width)
-            x_limit, y_limit, cell_x, cell_y = limitAngles(distance, grid_size)
+            distance = distance_finder(focal_length, face_width, obj_width)
+            x_limit, y_limit, cell_x, cell_y = limit_angles(distance, grid_size)
 
             # Calculation of indices -> State grid
             idx = int(abs(x) / cell_x)
