@@ -84,7 +84,6 @@ while cap.isOpened():
             # Convert it to the NumPy array
             face_3d = np.array(face_3d, dtype=np.float64)
 
-            # Calibration for C920HD Logitech cam
             focal_length = 1 * img_w
 
             # The camera matrix
@@ -112,11 +111,19 @@ while cap.isOpened():
             distance = distance_finder(focal_length, face_width, obj_width)
             x_limit, y_limit, cell_x, cell_y = limit_angles(distance, grid_size)
 
+            print(y_limit)
             # Calculation of indices -> State grid
             idx = int(abs(x) / cell_x)
             idy = int((y + y_limit) / cell_y)
 
             # See where the user's head tilting
+
+            if (y < -1 * y_limit) or (y >= (y_limit - y_limit / 3)) or (x < 0) or (x >= 2 * x_limit):
+                text = "Outside"
+            else:
+                text = "Inside (%d, %d)" % (idx % grid_size[0], idy % grid_size[0])
+                grid[idx % grid_size[0]][idy % grid_size[0]] = 1
+            '''
             if y < -y_limit:
                 text = "Outside Left"
             elif y > y_limit:
@@ -124,11 +131,11 @@ while cap.isOpened():
             elif x < 0:
                 text = "Outside Down"
             elif x > x_limit:
-                text = "Outside Up"  
+                text = "Outside Up"
             else:
                 text = "Inside (%d, %d)" % (idx % grid_size[0], idy % grid_size[0])
                 grid[idx % grid_size[0]][idy % grid_size[0]] = 1
-
+            '''
             print(grid)
             grid[:][:] = 0
             
@@ -152,9 +159,9 @@ while cap.isOpened():
         totalTime = end - start
 
         fps = 1 / totalTime
-        # print("FPS: ", fps)
+        # print("Focused: ", fps)
 
-        cv2.putText(image, f'FPS: {int(fps)}', (20,450), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0,255,0), 2)
+        cv2.putText(image, f'FPS: {int(fps)}', (20, 450), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 255, 0), 2)
 
         mp_drawing.draw_landmarks(
                     image=image,
