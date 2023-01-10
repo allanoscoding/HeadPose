@@ -110,35 +110,20 @@ while cap.isOpened():
             face_width = 14.0
             distance = distance_finder(focal_length, face_width, obj_width)
             x_limit, y_limit, cell_x, cell_y = limit_angles(distance, grid_size)
-
-            print(y_limit)
+            
             # Calculation of indices -> State grid
             idx = int(abs(x) / cell_x)
-            idy = int((y + y_limit) / cell_y)
+            idy = int((y + y_limit/2) / cell_y)
 
             # See where the user's head tilting
 
-            if (y < -1 * y_limit) or (y >= (y_limit - y_limit / 3)) or (x < 0) or (x >= 2 * x_limit):
+            if (y < -y_limit/2) or (y > (y_limit/2 - 11)) or (x < 0) or (x >= 2 * x_limit):
                 text = "Outside"
             else:
                 text = "Inside (%d, %d)" % (idx % grid_size[0], idy % grid_size[0])
                 grid[idx % grid_size[0]][idy % grid_size[0]] = 1
-            '''
-            if y < -y_limit:
-                text = "Outside Left"
-            elif y > y_limit:
-                text = "Outside Right"
-            elif x < 0:
-                text = "Outside Down"
-            elif x > x_limit:
-                text = "Outside Up"
-            else:
-                text = "Inside (%d, %d)" % (idx % grid_size[0], idy % grid_size[0])
-                grid[idx % grid_size[0]][idy % grid_size[0]] = 1
-            '''
-            print(grid)
+
             grid[:][:] = 0
-            
             # Clearing the Screen
             # os.system('clear')
             # Display the nose direction

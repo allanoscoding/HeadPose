@@ -28,7 +28,7 @@ def limit_angles(distance, grid_size=(1, 1)):
     # Assuming we have the camera on top of the screen ->
     d_cam = distance
 
-    theta_y = math.tan(w / (2 * d_cam))
+    theta_y = math.tan(w / d_cam)
     # -> Rad
     theta_y = math.atan(theta_y)
     theta_y *= 180/math.pi

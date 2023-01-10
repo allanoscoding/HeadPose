@@ -102,15 +102,16 @@ while cap.isOpened():
           
             face_width = 14.0
             distance = distance_finder(focal_length, face_width, obj_width)
-            x_limit, y_limit = limit_angles(distance)
+            x_limit, y_limit, screen_w, screen_y = limit_angles(distance)
+            print(x_limit, y_limit)
             # See where the user's head tilting
-            if y <= -y_limit:
+            if y < -y_limit/2:
                 text = "Outside Left "
-            elif y >= y_limit:
+            elif y > y_limit/2 - 11:
                 text = "Outside Right"
-            elif x <= -5:
+            elif x < 0:
                 text = "Outside Down"
-            elif x >= x_limit:
+            elif x > 2*x_limit:
                 text = "Outside Up"
             else:
                 text = "Inside"

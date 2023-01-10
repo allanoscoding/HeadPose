@@ -83,7 +83,6 @@ while cap.isOpened():
             y = angles[1] * 360
             z = angles[2] * 360
           
-            print(angles)
             # See where the user's head tilting
             if y < -10:
                 text = "Looking Left"
